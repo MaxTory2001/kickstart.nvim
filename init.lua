@@ -160,6 +160,7 @@ require('lazy').setup({
   -- keys can be used to configure plugin behavior/loading/etc.
 
   'NoahTheDuke/vim-just',
+  'elihunter173/dirbuf.nvim',
 
   {
     'IndianBoy42/tree-sitter-just',
@@ -509,9 +510,9 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -710,6 +711,7 @@ require('lazy').setup({
       }
     end,
   },
+  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -813,7 +815,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
