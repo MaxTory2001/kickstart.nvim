@@ -3,6 +3,7 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.python3_host_prog = '/usr/bin/python3'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -179,8 +180,8 @@ require('lazy').setup({
     opts = {
 
       toggler = {
-        line = '<leader>cc',
-        block = '<leader>bb',
+        line = '<leader>c',
+        block = '<leader>b',
       },
 
       opleader = {
@@ -258,6 +259,7 @@ require('lazy').setup({
   -- you do for a plugin at the top level, you can do for a dependency.
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
+  'princejoogie/dir-telescope.nvim',
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -325,6 +327,9 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'dir')
+      vim.keymap.set('n', '<leader>fd', '<cmd>Telescope dir live_grep<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>pd', '<cmd>Telescope dir find_files<CR>', { noremap = true, silent = true })
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -511,8 +516,27 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
+        pylsp = {
+          cmd = { 'pylsp' },
+          settings = {
+            pylsp = {
+              plugins = {
+                -- pyflakes = {
+                --   enable = false,
+                -- },
+                pycodestyle = {
+                  maxLineLength = 120,
+                  ignore = { 'E501', 'W291' },
+                },
+              },
+            },
+          },
+        },
+
+        lemminx = {},
+
         -- gopls = {},
-        pyright = {},
+        -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -711,7 +735,7 @@ require('lazy').setup({
       }
     end,
   },
-  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+  { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
