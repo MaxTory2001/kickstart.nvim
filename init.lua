@@ -510,18 +510,6 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local lsp_zero = require('lsp-zero')
-      lsp_zero.extend_lspconfig()
-
-      lsp_zero.on_attach(function(client, bufnr)
-        -- see :help lsp-zero-keybindings
-        -- to learn the available actions
-        lsp_zero.default_keymaps({buffer = bufnr})
-      end)
-
-      require('lspconfig').clangd.setup({})
-      require('lspconfig').lua_ls.setup({})
-      require('lspconfig').pyright.setup({})
 
     end,
   },
@@ -606,6 +594,7 @@ require('lazy').setup({
       luasnip.config.setup {}
 
       cmp.setup {
+        preselect = 'item',
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -802,6 +791,41 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+})
+
+local lsp_zero = require('lsp-zero')
+lsp_zero.extend_lspconfig()
+
+lsp_zero.on_attach(function(client, bufnr)
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp_zero.default_keymaps({buffer = bufnr})
+end)
+
+require('lspconfig').clangd.setup({})
+require('lspconfig').lua_ls.setup({})
+require('lspconfig').pylsp.setup({
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          enabled = false,
+          ignore = {'W391'},
+          maxLineLength = 120
+        },
+        autopep8 = { enabled = false },
+        flake8 = { enabled = false },
+        pyflakes = { enabled = true },
+        pylint = { 
+          enabled = true,
+          args = {'--errors-only', '--disable=C,R'},
+        },
+        mccabe = { enabled = false },
+        rope_autoimport = { enabled = false },
+        yapf = { enabled = false },
+      }
+    }
+  }
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
