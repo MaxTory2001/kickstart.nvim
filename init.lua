@@ -817,7 +817,7 @@ require('lspconfig').pylsp.setup({
         flake8 = { enabled = false },
         pyflakes = { enabled = true },
         pylint = { 
-          enabled = true,
+          enabled = false,
           args = {'--errors-only', '--disable=C,R'},
         },
         mccabe = { enabled = false },
