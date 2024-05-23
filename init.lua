@@ -8,6 +8,9 @@ vim.g.python3_host_prog = '/usr/bin/python3'
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
+-- For zathura viewing
+vim.g.vimtex_view_method = "zathura"
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -155,7 +158,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
+  "lervag/vimtex",    -- latex
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -231,7 +234,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -284,7 +287,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -510,7 +513,6 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-
     end,
   },
 
@@ -677,7 +679,7 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim',  event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -799,26 +801,27 @@ lsp_zero.extend_lspconfig()
 lsp_zero.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
-  lsp_zero.default_keymaps({buffer = bufnr})
+  lsp_zero.default_keymaps({ buffer = bufnr })
 end)
 
 require('lspconfig').clangd.setup({})
 require('lspconfig').lua_ls.setup({})
+require('lspconfig').texlab.setup({})
 require('lspconfig').pylsp.setup({
   settings = {
     pylsp = {
       plugins = {
         pycodestyle = {
           enabled = false,
-          ignore = {'W391'},
+          ignore = { 'W391' },
           maxLineLength = 120
         },
         autopep8 = { enabled = false },
         flake8 = { enabled = false },
         pyflakes = { enabled = true },
-        pylint = { 
+        pylint = {
           enabled = false,
-          args = {'--errors-only', '--disable=C,R'},
+          args = { '--errors-only', '--disable=C,R' },
         },
         mccabe = { enabled = false },
         rope_autoimport = { enabled = false },
